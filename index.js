@@ -25,6 +25,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const movieCollection = client.db("movieDB").collection("movies")
+    const favoriteCollection = client.db("movieDB").collection("favorites")
 
     app.get("/movies", async (req,res) =>{
         const cursor = movieCollection.find()
@@ -43,8 +44,15 @@ async function run() {
 
     app.post('/movies', async (req,res)=>{
         const newMovie = req.body
-        console.log(newMovie);
+        // console.log(newMovie);
         const result = await movieCollection.insertOne(newMovie)
+        res.send(result)
+    })
+
+    app.post('/favorites', async (req,res)=>{
+        const newFavorite = req.body
+        // console.log(newFavorite);
+        const result = await favoriteCollection.insertOne(newFavorite)
         res.send(result)
     })
 
