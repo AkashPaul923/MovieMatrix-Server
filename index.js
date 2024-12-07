@@ -27,6 +27,13 @@ async function run() {
     const movieCollection = client.db("movieDB").collection("movies")
     const favoriteCollection = client.db("movieDB").collection("favorites")
 
+    app.get("/topmovies", async (req,res) =>{
+        const cursor = movieCollection.find().sort({ rating: -1 }).limit(6)
+        const result = await cursor.toArray()
+        res.send(result)
+      })
+
+
     app.get("/movies", async (req,res) =>{
         const cursor = movieCollection.find()
         const result = await cursor.toArray()
