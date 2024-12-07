@@ -39,6 +39,19 @@ async function run() {
         const result = await movieCollection.findOne(query)
         res.send(result)
     })
+    app.get("/favorites", async (req,res) =>{
+      const cursor = favoriteCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
+    app.get("/favorites/:email", async (req,res)=>{
+      const email = req.params.email
+      const query = {email : email}
+      const cursor = favoriteCollection.find(query)
+      const result = await cursor.toArray()
+      res.send(result)
+  })
 
 
 
@@ -60,6 +73,14 @@ async function run() {
       const id = req.params.id
       const query = {_id : new ObjectId(id)}
       const result = await movieCollection.deleteOne(query)
+      res.send(result)
+    })
+
+
+    app.delete("/favorites/:id", async (req,res)=>{
+      const id = req.params.id
+      const query = {_id : new ObjectId(id)}
+      const result = await favoriteCollection.deleteOne(query)
       res.send(result)
     })
 
