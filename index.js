@@ -35,8 +35,12 @@ async function run() {
 
 
     app.get("/movies", async (req,res) =>{
-        const cursor = movieCollection.find()
-        const result = await cursor.toArray()
+        const { search } = req.query
+        let option = {}
+        if(search){
+          option = {title : { $regex : search , $options : 'i' }}
+        }
+        const result = await movieCollection.find(option).toArray()
         res.send(result)
       })
   
@@ -46,6 +50,9 @@ async function run() {
         const result = await movieCollection.findOne(query)
         res.send(result)
     })
+
+
+
     app.get("/favorites", async (req,res) =>{
       const cursor = favoriteCollection.find()
       const result = await cursor.toArray()
